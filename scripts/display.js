@@ -1,5 +1,4 @@
 import { system, world } from "@minecraft/server";
-importimport { system, world } from "@minecraft/server";
 import { getScore, metricNumbers } from "./functions";
 
 system.runSchedule(() => {
