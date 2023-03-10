@@ -1,4 +1,4 @@
-import { world } from "@minecraft/server";
+import { world } from "@minecraft/server";import { world } from "@minecraft/server";
 
 const prefix = "+";
 world.events.beforeChat.subscribe((data) => {
@@ -10,21 +10,25 @@ world.events.beforeChat.subscribe((data) => {
       case "gms":
         if (player.hasTag("admin")) {
           player.runCommandAsync("gamemode survival");
+          player.tell("Gamemode updated to Survival");
         } else player.tell("§cMissing permissions. [Admin]");
         break;
       case "gma":
         if (player.hasTag("admin")) {
           player.runCommandAsync("gamemode adventure");
+          player.tell("Gamemode updated to Adventure");
         } else player.tell("§cMissing permissions. [Admin]");
         break;
       case "gmc":
         if (player.hasTag("admin")) {
           player.runCommandAsync("gamemode creative");
+          player.tell("Gamemode updated to Creative");
         } else player.tell("§cMissing permissions. [Admin]");
         break;
       case "spectator":
         if (player.hasTag("admin")) {
           player.runCommandAsync("gamemode spectator");
+          player.tell("Gamemode updated to Spectator");
         } else player.tell("§cMissing permissions. [Admin]");
         break;
       case "help":
@@ -71,6 +75,11 @@ world.events.beforeChat.subscribe((data) => {
         else if (player.hasTag("in_combat"))
           player.tell("§cYou must be out of combat before using this command.");
         break;
+      case "cc":
+        if (!player.hasTag("in_combat")) player.addTag("ccrafting");
+        else if (player.hasTag("in_combat"))
+          player.tell("§cYou must be out of combat before using this command.");
+        break;
       case "misc":
         if (!player.hasTag("in_combat")) player.addTag("misc");
         else if (player.hasTag("in_combat"))
@@ -105,6 +114,14 @@ world.events.beforeChat.subscribe((data) => {
           player.tell("§8[§6Skygen§8] §7You have disabled the §4Admin §7chat.");
         } else player.tell("§8[§6Skygen§8] §cYou don't have permission to be using this command.");
         break;
+      case "ac":
+        if (player.hasTag("admin") && !player.hasTag("adminchat")) {
+          player.addTag("adminchat");
+          player.tell("§8[§6Skygen§8] §7You have enabled the §4Admin §7chat.");
+        } else if (player.hasTag("admin") && player.hasTag("adminchat")) {
+          player.removeTag("adminchat");
+          player.tell("§8[§6Skygen§8] §7You have disabled the §4Admin §7chat.");
+        } else player.tell("§8[§6Skygen§8] §cYou don't have permission to be using this command.");
       default:
         player.tell(`§l§c${message}§r is an unavailable command!\n§bTry '+help' for more information.`);
         break;
