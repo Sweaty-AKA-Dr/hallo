@@ -1,4 +1,4 @@
-import { world } from "@minecraft/server";import { world } from "@minecraft/server";
+import { world } from "@minecraft/server";
 
 const prefix = "+";
 world.events.beforeChat.subscribe((data) => {
