@@ -1,4 +1,4 @@
-import { world } from "@minecraft/server";
+import { system, world } from "@minecraft/server";
 import { ActionFormData } from "@minecraft/server-ui";
 
 world.events.beforeItemUse.subscribe((data) => {
@@ -33,7 +33,7 @@ function page1(player) {
       player.addTag("credits");
     }
     if (response.selection == 4) {
-      page5(player);
+      player.tell('Coming Soon...')
     }
     if (response.selection == 5) {
       player.tell("§4§lClosed GUI");
@@ -125,13 +125,14 @@ function page4(player) {
   });
 }
 
-world.events.tick.subscribe((data) => {
+system.runSchedule(() => {
+  [...world.getPlayers()].forEach(player => {
   if (!player.hasTag("in_combat"))
     player.runCommandAsync(
       'replaceitem entity slot.hotbar 8 minecraft:clock {"minecraft:item_lock":{ "mode": "lock_in_slot" }, "minecraft:keep_on_death":{}}'
     );
   if (!player.hasTag("in_combat"))
     player.runCommandAsync(
-      'replaceitem entity slot.hotbar 8 minecraft:border_block {"minecraft:item_lock":{ "mode": "lock_in_slot" }, "minecraft:keep_on_death":{}}'
-    );
-});
+      'replaceitem entity slot.hotbar 8 minecraft:border_block {"minecraft:item_lock":{ "mode": "lock_in_slot" }, "minecraft:keep_on_death":{}}')
+  });
+}, 20);
