@@ -1,4 +1,4 @@
-import { world } from '@minecraft/server'
+import { world } from "@minecraft/server";
 import { getScore, metricNumbers } from "./functions";
 
 const rank_prefix = "rank:";
@@ -27,6 +27,11 @@ world.events.chat.subscribe((data) => {
   const money = metricNumbers(getScore(player, "money"));
   const ranks = getRanks(player);
   if (player.hasTag("adminchat")) {
-    overworld.runCommandAsync(`tellraw @a[tag=admin] {"rawtext":[{"text":"§8[§4Admin§8] §7${player.name}: §f${message}"}]}`);
-  } else world.say(`§8[§b${hours}§8] [§a${money}§8] [§f${ranks}§8] §7${player.name}: §f${message}`);
+    overworld.runCommandAsync(
+      `tellraw @a[tag=admin] {"rawtext":[{"text":"§8[§4Admin§8] §7${player.name}: §f${message}"}]}`
+    );
+  } else
+    world.say(
+      `§8[§b${hours}§8] [§a${money}§8] [§f${ranks}§8] §7${player.name}: §f${message}`
+    );
 });

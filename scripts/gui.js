@@ -33,7 +33,7 @@ function page1(player) {
       player.addTag("credits");
     }
     if (response.selection == 4) {
-      player.tell('Coming Soon...')
+      player.tell("Coming Soon...");
     }
     if (response.selection == 5) {
       player.tell("§4§lClosed GUI");
@@ -126,13 +126,14 @@ function page4(player) {
 }
 
 system.runSchedule(() => {
-  [...world.getPlayers()].forEach(player => {
-  if (!player.hasTag("in_combat"))
-    player.runCommandAsync(
-      'replaceitem entity slot.hotbar 8 minecraft:clock {"minecraft:item_lock":{ "mode": "lock_in_slot" }, "minecraft:keep_on_death":{}}'
-    );
-  if (!player.hasTag("in_combat"))
-    player.runCommandAsync(
-      'replaceitem entity slot.hotbar 8 minecraft:border_block {"minecraft:item_lock":{ "mode": "lock_in_slot" }, "minecraft:keep_on_death":{}}')
+  [...world.getPlayers()].forEach((player) => {
+    if (!player.hasTag("in_combat"))
+      player.runCommandAsync(
+        'replaceitem entity slot.hotbar 8 minecraft:clock {"minecraft:item_lock":{ "mode": "lock_in_slot" }, "minecraft:keep_on_death":{}}'
+      );
+    if (!player.hasTag("in_combat"))
+      player.runCommandAsync(
+        'replaceitem entity slot.hotbar 8 minecraft:border_block {"minecraft:item_lock":{ "mode": "lock_in_slot" }, "minecraft:keep_on_death":{}}'
+      );
   });
 }, 20);
