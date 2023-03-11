@@ -112,7 +112,10 @@ world.events.beforeChat.subscribe((data) => {
         } else if (player.hasTag("admin") && player.hasTag("adminchat")) {
           player.removeTag("adminchat");
           player.tell("§8[§6Skygen§8] §7You have disabled the §4Admin §7chat.");
-        } else player.tell("§8[§6Skygen§8] §cYou don't have permission to be using this command.");
+        } else
+          player.tell(
+            "§8[§6Skygen§8] §cYou don't have permission to be using this command."
+          );
         break;
       case "ac":
         if (player.hasTag("admin") && !player.hasTag("adminchat")) {
@@ -121,9 +124,15 @@ world.events.beforeChat.subscribe((data) => {
         } else if (player.hasTag("admin") && player.hasTag("adminchat")) {
           player.removeTag("adminchat");
           player.tell("§8[§6Skygen§8] §7You have disabled the §4Admin §7chat.");
-        } else player.tell("§8[§6Skygen§8] §cYou don't have permission to be using this command.");
+        } else
+          player.tell(
+            "§8[§6Skygen§8] §cYou don't have permission to be using this command."
+          );
+        break;
       default:
-        player.tell(`§l§c${message}§r is an unavailable command!\n§bTry '+help' for more information.`);
+        player.tell(
+          `§l§c${message}§r is an unavailable command!\n§bTry '+help' for more information.`
+        );
         break;
     }
   }
