@@ -1,4 +1,4 @@
-import { world } from '@minecraft/server'import { world } from "@minecraft/server";
+import { world } from '@minecraft/server'
 import { getScore, metricNumbers } from "./functions";
 
 const rank_prefix = "rank:";
