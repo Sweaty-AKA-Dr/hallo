@@ -4,5 +4,5 @@ import "./commands";
 import "./display";
 import "./functions";
 import "./spawn";
-import "./antihack";
+import "./sell";
 import "./gui";
