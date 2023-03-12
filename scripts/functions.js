@@ -1,38 +1,6 @@
 import { world } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui"
 
-Object.defineProperty(Player.prototype, "scores", {
-    get() {
-        const player = this
-        return new Proxy({}, {
-            get(_, property) {
-                try {
-                    return world.scoreboard.getObjective(property).getScore(player.scoreboard)
-                } catch {
-                    return NaN
-                }
-            },
-            set(_, property, value) {
-                player.runCommandAsync(`scoreboard players set @s "${property}" ${value}`)
-            }
-        })
-    }
-})
-
-export function showMoneyTransferForm(player) {
-    const allPlayers = world.getAllPlayers().map(plr => plr.name)
-    const response = await new ModalFormData().title("Money Transfer").dropdown("Select a Player", allPlayers).textField(`Please insert the amount to transfer`, "Amount goes here...").show(player)
-    if (response.canceled) return
-    const target = world.getAllPlayers().find(plr => plr.name === allPlayers[response.formValues[0]])
-    if (!target) return player.tell("Player left the game!")
-    const amount = parseInt(response.formValues[1])
-    if (isNaN(amount) || amount > player.scores["money"]) return player.tell("Invalid Amount!")
-    player.scores["money"] -= amount
-    target.scores["money"] += amount
-    player.tell(`Sent $${amount} to ${target.name}`)
-    target.tell(`Recieved $${amount} from ${player.name}`)
-}
-
 export function setTickTimeout(callback, tick, loop = false) {
   let cT = 0;
   const tE = world.events.tick.subscribe((data) => {
