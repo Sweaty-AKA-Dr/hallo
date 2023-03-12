@@ -129,6 +129,9 @@ world.events.beforeChat.subscribe((data) => {
             "§8[§6Skygen§8] §cYou don't have permission to be using this command."
           );
         break;
+      case "mt":
+        
+        break;
       default:
         player.tell(
           `§l§c${message}§r is an unavailable command!\n§bTry '+help' for more information.`

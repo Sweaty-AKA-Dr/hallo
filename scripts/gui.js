@@ -33,7 +33,7 @@ function page1(player) {
       player.addTag("credits");
     }
     if (response.selection == 4) {
-      player.tell("Coming Soon...");
+      page5(player);
     }
     if (response.selection == 5) {
       player.tell("§4§lClosed GUI");
@@ -151,7 +151,7 @@ Object.defineProperty(Player.prototype, "scores", {
   },
 });
 
-async function showMoneyTransferForm(player) {
+async function page5(player) {
   const allPlayers = world.getAllPlayers().map((plr) => plr.name);
   const response = await new ModalFormData()
     .title("Money Transfer")
@@ -162,6 +162,8 @@ async function showMoneyTransferForm(player) {
   const target = world
     .getAllPlayers()
     .find((plr) => plr.name === allPlayers[response.formValues[0]]);
+  if (target.name === player.name)
+    return player.tell('You Cant Send Money To Yourself. Why Would You Need To?')
   if (!target) return player.tell("Player left the game!");
   const amount = parseInt(response.formValues[1]);
   if (isNaN(amount) || amount > player.scores["money"])
@@ -170,7 +172,7 @@ async function showMoneyTransferForm(player) {
   target.scores["money"] += amount;
   player.tell(`Sent $${amount} to ${target.name}`);
   target.tell(`Recieved $${amount} from ${player.name}`);
-}
+  }
 
 system.runSchedule(() => {
   [...world.getPlayers()].forEach((player) => {
