@@ -1,5 +1,5 @@
-import { system, world } from "@minecraft/server";
-import { ActionFormData } from "@minecraft/server-ui";
+import { system, world, Player } from "@minecraft/server";
+import { ActionFormData, ModalFormData } from "@minecraft/server-ui";
 
 world.events.beforeItemUse.subscribe((data) => {
   let player = data.source;
@@ -52,7 +52,7 @@ function page2(player) {
   form.button("§4§lClose");
   form.show(player).then((response) => {
     if (response.selection == 0) {
-      player.addTag("Spawn");
+      player.addTag("spawn");
     }
     if (response.selection == 1) {
       player.addTag("plots");
@@ -111,10 +111,10 @@ function page4(player) {
   form.button("§4§lClose");
   form.show(player).then((response) => {
     if (response.selection == 0) {
-      player.addTag("Spawn");
+      player.addTag("ccrafting");
     }
     if (response.selection == 1) {
-      player.addTag("plots");
+      player.addTag("ench");
     }
     if (response.selection == 3) {
       page3(player);
@@ -125,15 +125,62 @@ function page4(player) {
   });
 }
 
+Object.defineProperty(Player.prototype, "scores", {
+  get() {
+    const player = this;
+    return new Proxy(
+      {},
+      {
+        get(_, property) {
+          try {
+            return world.scoreboard
+              .getObjective(property.toString())
+              .getScore(player.scoreboard);
+          } catch {
+            return NaN;
+          }
+        },
+        set(_, property, value) {
+          player.runCommandAsync(
+            `scoreboard players set @s "${property}" ${value}`
+          );
+          return true;
+        },
+      }
+    );
+  },
+});
+
+async function showMoneyTransferForm(player) {
+  const allPlayers = world.getAllPlayers().map((plr) => plr.name);
+  const response = await new ModalFormData()
+    .title("Money Transfer")
+    .dropdown("Select a Player", allPlayers)
+    .textField(`Please insert the amount to transfer`, "Amount goes here...")
+    .show(player);
+  if (response.canceled) return;
+  const target = world
+    .getAllPlayers()
+    .find((plr) => plr.name === allPlayers[response.formValues[0]]);
+  if (!target) return player.tell("Player left the game!");
+  const amount = parseInt(response.formValues[1]);
+  if (isNaN(amount) || amount > player.scores["money"])
+    return player.tell("Invalid Amount!");
+  player.scores["money"] -= amount;
+  target.scores["money"] += amount;
+  player.tell(`Sent $${amount} to ${target.name}`);
+  target.tell(`Recieved $${amount} from ${player.name}`);
+}
+
 system.runSchedule(() => {
   [...world.getPlayers()].forEach((player) => {
     if (!player.hasTag("in_combat"))
       player.runCommandAsync(
         'replaceitem entity slot.hotbar 8 minecraft:clock 1 0 {"minecraft:item_lock":{ "mode": "lock_in_slot" }, "minecraft:keep_on_death":{}}'
       );
-    if (!player.hasTag("in_combat"))
+    if (player.hasTag("in_combat"))
       player.runCommandAsync(
         'replaceitem entity slot.hotbar 8 minecraft:border_block 1 0 {"minecraft:item_lock":{ "mode": "lock_in_slot" }, "minecraft:keep_on_death":{}}'
       );
   });
-}, 20);
+}, 1);
