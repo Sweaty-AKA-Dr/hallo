@@ -6,6 +6,7 @@ world.events.beforeItemUse.subscribe((data) => {
   let item = data.item;
 
   if (item.typeId === "minecraft:clock") {
+    player.runCommandAsync("playsound ${player.name}");
     page1(player);
   }
 });
@@ -48,6 +49,7 @@ function page2(player) {
   form.button("§aPlots");
   form.button("§aShop");
   form.button("§aSell");
+  form.button("§6Last Page §8<-")
   form.button("§6Next Page §8->");
   form.button("§4§lClose");
   form.show(player).then((response) => {
@@ -64,7 +66,7 @@ function page2(player) {
       player.addTag("sell");
     }
     if (response.selection == 4) {
-      page4(player);
+      page3(player);
     }
     if (response.selection == 5) {
       player.tell("§4§lClosed GUI");
@@ -92,7 +94,7 @@ function page3(player) {
       player.addTag("parkour");
     }
     if (response.selection == 3) {
-      page3(player);
+      page2(player);
     }
     if (response.selection == 4) {
       page4(player);
@@ -116,10 +118,10 @@ function page4(player) {
     if (response.selection == 1) {
       player.addTag("ench");
     }
-    if (response.selection == 3) {
+    if (response.selection == 2) {
       page3(player);
     }
-    if (response.selection == 4) {
+    if (response.selection == 3) {
       player.tell("§4§lClosed GUI");
     }
   });
@@ -154,7 +156,7 @@ Object.defineProperty(Player.prototype, "scores", {
 async function page5(player) {
   const allPlayers = world.getAllPlayers().map((plr) => plr.name);
   const response = await new ModalFormData()
-    .title("Money Transfer")
+    .title("§2Money Transfer")
     .dropdown("Select a Player", allPlayers)
     .textField(`Please insert the amount to transfer`, "Amount goes here...")
     .show(player);
@@ -163,26 +165,28 @@ async function page5(player) {
     .getAllPlayers()
     .find((plr) => plr.name === allPlayers[response.formValues[0]]);
   if (target.name === player.name)
-    return player.tell('You Cant Send Money To Yourself. Why Would You Need To?')
+    return player.tell(
+      "§l§eYou Cant Send Money To Yourself. Why Would You Need To?"
+    );
   if (!target) return player.tell("Player left the game!");
   const amount = parseInt(response.formValues[1]);
   if (isNaN(amount) || amount > player.scores["money"])
-    return player.tell("Invalid Amount!");
+    return player.tell("§cInsufficient Funds!");
   player.scores["money"] -= amount;
   target.scores["money"] += amount;
-  player.tell(`Sent $${amount} to ${target.name}`);
-  target.tell(`Recieved $${amount} from ${player.name}`);
-  }
+  player.tell(`§bYou Have Sent §a$${amount} §bto §c${target.name}`);
+  target.tell(`§bYou Have Recieved §a$${amount} §bfrom §c${player.name}`);
+}
 
 system.runSchedule(() => {
   [...world.getPlayers()].forEach((player) => {
     if (!player.hasTag("in_combat"))
       player.runCommandAsync(
-        'replaceitem entity slot.hotbar 8 minecraft:clock 1 0 {"minecraft:item_lock":{ "mode": "lock_in_slot" }, "minecraft:keep_on_death":{}}'
+        'replaceitem entity ${player.name} slot.hotbar 8 minecraft:clock 1 0 {"minecraft:item_lock":{ "mode": "lock_in_slot" }, "minecraft:keep_on_death":{}}'
       );
     if (player.hasTag("in_combat"))
       player.runCommandAsync(
-        'replaceitem entity slot.hotbar 8 minecraft:border_block 1 0 {"minecraft:item_lock":{ "mode": "lock_in_slot" }, "minecraft:keep_on_death":{}}'
+        'replaceitem entity ${player.name} slot.hotbar 8 minecraft:border_block 1 0 {"minecraft:item_lock":{ "mode": "lock_in_slot" }, "minecraft:keep_on_death":{}}'
       );
   });
 }, 1);
