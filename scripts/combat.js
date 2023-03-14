@@ -20,6 +20,6 @@ world.events.entityHurt.subscribe((data) => {
     attacked.getComponent("minecraft:health").current <= 0
   ) {
     attacker.removeTag("in_combat");
-    attacked.removeTag("incombat");
+    attacked.removeTag("in_combat");
   } else return;
 });
