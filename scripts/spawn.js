@@ -14,16 +14,16 @@ world.events.playerSpawn.subscribe((data) => {
     player.runCommandAsync("gamemode adventure");
   } else if (initial_spawn && player.hasTag("in_combat")) {
     player.addTag("warn");
-    player.tell("§l§cYou have been warned for combat logging!");
+    player.sendMessage("§l§cYou have been warned for combat logging!");  
   } else if (initial_spawn && player.hasTag("ban")) {
     player.runCommandAsync(
       `kick ${player.name} §cYou have been banned from Legends Skygen.`
     );
-    world.say(`§l§f${player.name} §chas tried joining while they're banned.`);
+    world.sendMessage(`§l§f${player.name} §chas tried joining while they're banned.`);
   }
 });
 
-system.runSchedule(() => {
+system.runInterval(() => {
   [...world.getPlayers()].forEach((player) => {
     if (
       !player.hasTag("admin") &&
@@ -33,7 +33,7 @@ system.runSchedule(() => {
       player.runCommandAsync("scoreboard players add @s afkTimer 1");
     else player.runCommandAsync("scoreboard players set @s afkTimer 0");
     if (getScore(player, "afkTimer") == 3000)
-      player.tell("You will be kicked in 2 and a half minutes.");
+      player.sendMessage("You will be kicked in 2 and a half minutes.");
     if (getScore(player, "afkTimer") == 5900)
       player.onScreenDisplay.setActionBar("You will be kick in 5...");
     if (getScore(player, "afkTimer") == 5920)
@@ -45,7 +45,7 @@ system.runSchedule(() => {
     if (getScore(player, "afkTimer") == 5980)
       player.onScreenDisplay.setActionBar("You will be kick in 1...");
     if (getScore(player, "afkTimer") >= 6000) {
-      world.say(`§l§f${player.name} §chas been kicked for being AFK.`);
+      world.sendMessage(`§l§f${player.name} §chas been kicked for being AFK.`);
       player.runCommandAsync(
         `kick ${player.name} §cYou have been kicked for being AFK.`
       );

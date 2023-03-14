@@ -1,7 +1,7 @@
 import { system, world } from "@minecraft/server";
 import { getScore, metricNumbers } from "./functions";
 
-system.runSchedule(() => {
+system.runInterval(() => {
   [...world.getPlayers()].forEach((player) => {
     const money = metricNumbers(getScore(player, "money"));
     const time = metricNumbers(getScore(player, "hr"));

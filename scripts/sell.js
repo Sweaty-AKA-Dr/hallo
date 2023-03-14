@@ -47,6 +47,6 @@ function sell_items(player) {
   if (item_count < 1) return;
   if (item_count >= 1) {
     player.runCommandAsync(`scoreboard players add @s money ${amount}`);
-    player.tell(`You sold x${item_count} item(s) for $${amount}.`);
+    player.sendMessage(`You sold x${item_count} item(s) for $${amount}.`);
   }
 }

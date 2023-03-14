@@ -15,12 +15,9 @@ function getRanks(player) {
 }
 
 world.events.beforeChat.subscribe((data) => {
+  data.cancel = true
   data.sendToTargets = true;
-  data.targets = [];
-});
-
-const overworld = world.getDimension("overworld");
-world.events.chat.subscribe((data) => {
+  data.targets() = [];
   const player = data.sender;
   const message = data.message;
   const hours = String(getScore(player, "hr") + "H");
@@ -31,7 +28,15 @@ world.events.chat.subscribe((data) => {
       `tellraw @a[tag=admin] {"rawtext":[{"text":"§8[§4Admin§8] §7${player.name}: §f${message}"}]}`
     );
   } else
-    world.say(
+    world.sendMessage(
       `§8[§b${hours}§8] [§a${money}§8] [§f${ranks}§8] §7${player.name}: §f${message}`
     );
 });
+
+
+```
+Step 1) Copy EVERYTHING from the chat event.
+Step 2) Delete everything inside of the beforeChat event and paste new code.
+Step 3) At the top of the new beforeChat event add data.cancel = true
+Step 4) Delete the old chat event.
+```

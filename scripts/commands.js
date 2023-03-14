@@ -10,26 +10,26 @@ world.events.beforeChat.subscribe((data) => {
       case "gms":
         if (player.hasTag("admin")) {
           player.runCommandAsync("gamemode survival");
-          player.tell("Gamemode updated to Survival");
-        } else player.tell("§cMissing permissions. [Admin]");
+          player.sendMessage("Gamemode updated to Survival");
+        } else player.sendMessage("§cMissing permissions. [Admin]");
         break;
       case "gma":
         if (player.hasTag("admin")) {
           player.runCommandAsync("gamemode adventure");
-          player.tell("Gamemode updated to Adventure");
-        } else player.tell("§cMissing permissions. [Admin]");
+          player.sendMessage("Gamemode updated to Adventure");
+        } else player.sendMessage("§cMissing permissions. [Admin]");
         break;
       case "gmc":
         if (player.hasTag("admin")) {
           player.runCommandAsync("gamemode creative");
-          player.tell("Gamemode updated to Creative");
-        } else player.tell("§cMissing permissions. [Admin]");
+          player.sendMessage("Gamemode updated to Creative");
+        } else player.sendMessage("§cMissing permissions. [Admin]");
         break;
       case "spectator":
         if (player.hasTag("admin")) {
           player.runCommandAsync("gamemode spectator");
-          player.tell("Gamemode updated to Spectator");
-        } else player.tell("§cMissing permissions. [Admin]");
+          player.sendMessage("Gamemode updated to Spectator");
+        } else player.sendMessage("§cMissing permissions. [Admin]");
         break;
       case "help":
         player.addTag("help");
@@ -43,94 +43,94 @@ world.events.beforeChat.subscribe((data) => {
       case "spawn":
         if (!player.hasTag("in_combat")) player.addTag("spawn");
         else if (player.hasTag("in_combat"))
-          player.tell("§cYou must be out of combat before using this command.");
+          player.sendMessage("§cYou must be out of combat before using this command.");
         break;
       case "shop":
         if (!player.hasTag("in_combat")) player.addTag("shop");
         else if (player.hasTag("in_combat"))
-          player.tell("§cYou must be out of combat before using this command.");
+          player.sendMessage("§cYou must be out of combat before using this command.");
         break;
       case "sell":
         if (!player.hasTag("in_combat")) player.addTag("sell");
         else if (player.hasTag("in_combat"))
-          player.tell("§cYou must be out of combat before using this command.");
+          player.sendMessage("§cYou must be out of combat before using this command.");
         break;
       case "plots":
         if (!player.hasTag("in_combat")) player.addTag("plots");
         else if (player.hasTag("in_combat"))
-          player.tell("§cYou must be out of combat before using this command.");
+          player.sendMessage("§cYou must be out of combat before using this command.");
         break;
       case "donation":
         if (!player.hasTag("in_combat")) player.addTag("dono");
         else if (player.hasTag("in_combat"))
-          player.tell("§cYou must be out of combat before using this command.");
+          player.sendMessage("§cYou must be out of combat before using this command.");
         break;
       case "enchant":
         if (!player.hasTag("in_combat")) player.addTag("ench");
         else if (player.hasTag("in_combat"))
-          player.tell("§cYou must be out of combat before using this command.");
+          player.sendMessage("§cYou must be out of combat before using this command.");
         break;
       case "customcrafting":
         if (!player.hasTag("in_combat")) player.addTag("ccrafting");
         else if (player.hasTag("in_combat"))
-          player.tell("§cYou must be out of combat before using this command.");
+          player.sendMessage("§cYou must be out of combat before using this command.");
         break;
       case "cc":
         if (!player.hasTag("in_combat")) player.addTag("ccrafting");
         else if (player.hasTag("in_combat"))
-          player.tell("§cYou must be out of combat before using this command.");
+          player.sendMessage("§cYou must be out of combat before using this command.");
         break;
       case "misc":
         if (!player.hasTag("in_combat")) player.addTag("misc");
         else if (player.hasTag("in_combat"))
-          player.tell("§cYou must be out of combat before using this command.");
+          player.sendMessage("§cYou must be out of combat before using this command.");
         break;
       case "nightvision":
         if (!player.hasTag("nightvision")) {
           player.addTag("nightvision");
-          player.tell("§l§bNight Vision §7was enabled.");
+          player.sendMessage("§l§bNight Vision §7was enabled.");
         } else if (player.hasTag("nightvision")) {
           player.removeTag("nightvision");
-          player.tell("§l§bNight Vision §7was disabled.");
+          player.sendMessage("§l§bNight Vision §7was disabled.");
         }
         break;
       case "feed":
         player.runCommandAsync("effect @s saturation 1 255 true");
-        player.tell("§l§7Your §ehunger §7has been restored.");
+        player.sendMessage("§l§7Your §ehunger §7has been restored.");
         break;
       case "vip":
         if (player.hasTag("vip") && !player.hasTag("in_combat"))
           player.addTag("vipsell");
         else if (player.hasTag("vip") && player.hasTag("in_combat"))
-          player.tell("§cYou must be out of combat before using this command.");
-        else player.tell("§cMissing permissions. [Vip]");
+          player.sendMessage("§cYou must be out of combat before using this command.");
+        else player.sendMessage("§cMissing permissions. [Vip]");
         break;
       case "adminchat":
         if (player.hasTag("admin") && !player.hasTag("adminchat")) {
           player.addTag("adminchat");
-          player.tell("§8[§6Skygen§8] §7You have enabled the §4Admin §7chat.");
+          player.sendMessage("§8[§6Skygen§8] §7You have enabled the §4Admin §7chat.");
         } else if (player.hasTag("admin") && player.hasTag("adminchat")) {
           player.removeTag("adminchat");
-          player.tell("§8[§6Skygen§8] §7You have disabled the §4Admin §7chat.");
+          player.sendMessage("§8[§6Skygen§8] §7You have disabled the §4Admin §7chat.");
         } else
-          player.tell(
+          player.sendMessage(
             "§8[§6Skygen§8] §cYou don't have permission to be using this command."
           );
         break;
       case "ac":
         if (player.hasTag("admin") && !player.hasTag("adminchat")) {
           player.addTag("adminchat");
-          player.tell("§8[§6Skygen§8] §7You have enabled the §4Admin §7chat.");
+          player.sendMessage("§8[§6Skygen§8] §7You have enabled the §4Admin §7chat.");
         } else if (player.hasTag("admin") && player.hasTag("adminchat")) {
           player.removeTag("adminchat");
-          player.tell("§8[§6Skygen§8] §7You have disabled the §4Admin §7chat.");
+          player.sendMessage("§8[§6Skygen§8] §7You have disabled the §4Admin §7chat.");
         } else
-          player.tell(
+          player.sendMessage(
             "§8[§6Skygen§8] §cYou don't have permission to be using this command."
           );
         break;
       default:
-        player.tell(
+        player.sendMessage(
           `§l§c${message}§r is an unavailable command!\n§bTry '+help' for more information.`
         );
         break;

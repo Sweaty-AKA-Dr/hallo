@@ -42,7 +42,7 @@ function page1(player) {
       page6(player);
     }
     if (response.selection == 5) {
-      player.tell("§4§lClosed GUI");
+      player.sendMessage("§4§lClosed GUI");
     }
   });
 }
@@ -76,7 +76,7 @@ function page2(player) {
       page3(player);
     }
     if (response.selection == 6) {
-      player.tell("§4§lClosed GUI");
+      player.sendMessage("§4§lClosed GUI");
     }
   });
 }
@@ -107,7 +107,7 @@ function page3(player) {
       page4(player);
     }
     if (response.selection == 5) {
-      player.tell("§4§lClosed GUI");
+      player.sendMessage("§4§lClosed GUI");
     }
   });
 }
@@ -129,7 +129,7 @@ function page4(player) {
       page3(player);
     }
     if (response.selection == 3) {
-      player.tell("§4§lClosed GUI");
+      player.sendMessage("§4§lClosed GUI");
     }
   });
 }
@@ -172,17 +172,17 @@ async function page5(player) {
     .getAllPlayers()
     .find((plr) => plr.name === allPlayers[response.formValues[0]]);
   if (target.name === player.name)
-    return player.tell(
+    return player.sendMessage(
       "§l§eYou Cant Send Money To Yourself. Why Would You Need To?"
     );
-  if (!target) return player.tell("Player left the game!");
+  if (!target) return player.sendMessage("Player left the game!");
   const amount = parseInt(response.formValues[1]);
   if (isNaN(amount) || amount > player.scores["money"])
-    return player.tell("§cInsufficient Funds!");
+    return player.sendMessage("§cInsufficient Funds!");
   player.scores["money"] -= amount;
   target.scores["money"] += amount;
-  player.tell(`§bYou Have Sent §a$${amount} §bto §c${target.name}`);
-  target.tell(`§bYou Have Recieved §a$${amount} §bfrom §c${player.name}`);
+  player.sendMessage(`§bYou Have Sent §a$${amount} §bto §c${target.name}`);
+  target.sendMessage(`§bYou Have Recieved §a$${amount} §bfrom §c${player.name}`);
 }
 
 async function page6(player) {
@@ -201,15 +201,15 @@ async function page6(player) {
   const target = world
     .getAllPlayers()
     .find((plr) => plr.name === allPlayers[response.formValues[0]]);
-  if (!target) return player.tell("Player left the game!");
+  if (!target) return player.sendMessage("Player left the game!");
   const amount = parseInt(response.formValues[1]);
   player.runCommandAsync(
     `tellraw ${player.name} {"rawtext"[{"text"§b${target.name}s Stats\n--------------------------------------------------\n §fBalance §c- §b${money}\n §fTime Played §c- §b${time}\n §fKills §c- ${kills}\n §fDeaths §c- ${deaths}\n §fK/D §c- ${kdr}.${kdr_decimals}%"}]}`
   );
-  target.tell(`§b${player.name} §eHas Checked Your Stats`);
+  target.sendMessage(`§b${player.name} §eHas Checked Your Stats`);
 }
 
-system.runSchedule(() => {
+system.runInterval(() => {
   [...world.getPlayers()].forEach((player) => {
     if (!player.hasTag("in_combat"))
       player.runCommandAsync(
