@@ -20,7 +20,7 @@ function page1(player) {
   form.button("§4Rules");
   form.button("§6Credits");
   form.button("§2Money Transfer");
-  form.button("§bStats");
+//form.button("§bStats");
   form.button("§4§lClose");
   form.show(player).then((response) => {
     if (response.selection == 0) {
@@ -70,10 +70,12 @@ function page2(player) {
     if (response.selection == 3) {
       player.addTag("sell");
     }
-    if (response.selection == 4) {
+    if (response.selection == 4)
+      page1(player)
+    if (response.selection == 5) {
       page3(player);
     }
-    if (response.selection == 5) {
+    if (response.selection == 6) {
       player.tell("§4§lClosed GUI");
     }
   });
