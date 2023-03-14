@@ -1,12 +1,13 @@
 import { system, world, Player } from "@minecraft/server";
 import { ActionFormData, ModalFormData } from "@minecraft/server-ui";
+import { getScore, metricNumbers } from "./functions";
 
 world.events.beforeItemUse.subscribe((data) => {
   let player = data.source;
   let item = data.item;
 
   if (item.typeId === "minecraft:clock") {
-    player.runCommandAsync("playsound ${player.name}");
+    player.runCommandAsync("playsound note.bell ${player.name}");
     page1(player);
   }
 });
@@ -18,7 +19,8 @@ function page1(player) {
   form.button("§dHelp");
   form.button("§4Rules");
   form.button("§6Credits");
-  form.button("§7Coming Soon");
+  form.button("§2Money Transfer");
+  form.button("§bStats");
   form.button("§4§lClose");
   form.show(player).then((response) => {
     if (response.selection == 0) {
@@ -37,6 +39,9 @@ function page1(player) {
       page5(player);
     }
     if (response.selection == 5) {
+      page6(player);
+    }
+    if (response.selection == 5) {
       player.tell("§4§lClosed GUI");
     }
   });
@@ -49,7 +54,7 @@ function page2(player) {
   form.button("§aPlots");
   form.button("§aShop");
   form.button("§aSell");
-  form.button("§6Last Page §8<-")
+  form.button("§6Last Page §8<-");
   form.button("§6Next Page §8->");
   form.button("§4§lClose");
   form.show(player).then((response) => {
@@ -176,6 +181,30 @@ async function page5(player) {
   target.scores["money"] += amount;
   player.tell(`§bYou Have Sent §a$${amount} §bto §c${target.name}`);
   target.tell(`§bYou Have Recieved §a$${amount} §bfrom §c${player.name}`);
+}
+
+async function page6(player) {
+  const money = metricNumbers(getScore(player, "money"));
+  const time = metricNumbers(getScore(player, "hr"));
+  const kills = metricNumbers(getScore(player, "Kills"));
+  const deaths = metricNumbers(getScore(player, "Deaths"));
+  const kdr = getScore(player, "KDR");
+  const kdr_decimals = getScore(player, "KDR-Decimals");
+  const allPlayers = world.getAllPlayers().map((plr) => plr.name);
+  const response = await new ModalFormData()
+    .title("§l§9Stats")
+    .dropdown("Select a Player", allPlayers)
+    .show(player);
+  if (response.canceled) return;
+  const target = world
+    .getAllPlayers()
+    .find((plr) => plr.name === allPlayers[response.formValues[0]]);
+  if (!target) return player.tell("Player left the game!");
+  const amount = parseInt(response.formValues[1]);
+  player.runCommandAsync(
+    `tellraw ${player.name} {"rawtext"[{"text"§b${target.name}s Stats\n--------------------------------------------------\n §fBalance §c- §b${money}\n §fTime Played §c- §b${time}\n §fKills §c- ${kills}\n §fDeaths §c- ${deaths}\n §fK/D §c- ${kdr}.${kdr_decimals}%"}]}`
+  );
+  target.tell(`§b${player.name} §eHas Checked Your Stats`);
 }
 
 system.runSchedule(() => {
